@@ -9,7 +9,6 @@ function x = MakeToleranceGraph(beatX, beatY, alignmentX, alignmentY, fs)
 	%			fs: optional param, the sampling rate
 
 
-
 	if nargin < 5
 		fs = 22050;
 	end
@@ -22,7 +21,7 @@ function x = MakeToleranceGraph(beatX, beatY, alignmentX, alignmentY, fs)
 	% pull out the values of the alignment at each beat from the first track, and
 	% find how far from the actual beat for the second track is
 	relevantAlignmentYs = alignmentY(beatX);
-	dists = abs(beatY - relevantAlignmentYs)
+	dists = abs(beatY - relevantAlignmentYs);
 	for toleranceIndex = 1:length(tolerances)
 		% find the number out of tolerance
 		tolerance = tolerances(toleranceIndex);
@@ -42,22 +41,4 @@ function x = MakeToleranceGraph(beatX, beatY, alignmentX, alignmentY, fs)
 	ylabel('Percent Error');
 	title('Percent Error (DTW predicted beat in second track vs. ground truth beat in second track) vs. Tolerance');
 
-	% for toleranceIndex = 1:length(tolerances)
-	% 	% for each tolerance, go through every beat and see how many are out of range
-	% 	tolerance = tolerances(toleranceIndex);
-	% 	fprintf('Evaluating with tolerance: %g out of %g\n', tolerance, max(tolerances));
-	% 	numOutOfTolerance = 0;
-	% 	for beatIndex = 1:length(beatX)
-	% 		% a beat is out of range if the beat y is too far from the corresponding alignment y
-	% 		curX = beatX(beatIndex);
-	% 		dist = abs(beatY(beatIndex) - alignmentY(curX));
-	% 		fprintf('Dist is: %f\n', dist);
-	% 		if dist > tolerance
-	% 			++numOutOfTolerance;
-	% 		end
-	% 	end
-	% 	% percent error is the number out of tolerance over the number of beats
-	% 	percentError(toleranceIndex) = numOutOfTolerance / length(beatX);
-	% 	fprintf('Percent error is: %f\n', percentError(toleranceIndex));
-	% end
 end
