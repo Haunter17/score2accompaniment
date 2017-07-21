@@ -19,8 +19,9 @@ end
 %% DTW calculation
 C = 1. - chroma_x' * chroma_y;
 
-[accumCost, bestCost, steps, offset] = DTW_New_costMatrix(C, parameter.dn, parameter.dm, parameter.dw, false);
-WP = DTW_backtrace(steps, parameter.dn, parameter.dm, offset);
+[accumCost, bestCost, steps, offset] = ...
+    DTW_New_costMatrix(C, param.dn, param.dm, param.dw, false);
+WP = DTW_backtrace(steps, param.dn, param.dm, offset);
 
 ix = WP(1, :);
 iy = WP(2, :);

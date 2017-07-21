@@ -1,5 +1,14 @@
 addpath('./chroma-ansyn/');
 
+%% Parallel computing setup
+curPool = gcp('nocreate'); 
+if (isempty(curPool))
+    myCluster = parcluster('local');
+    numWorkers = myCluster.NumWorkers;
+    % create a parallel pool with the number of workers in the cluster`
+    pool = parpool(ceil(numWorkers * 0.75));
+end
+
 %% setting params for chroma feature and DTW
 fftlen = 880; % tweak this
 param.dn = int32([1 1 0]);
@@ -30,6 +39,7 @@ for index = 1:length(fileNameList)
     chroma_midi = chromagram_IF(signal_midi, fs, fftlen);
     annotfile = strcat(fileName, 'a_midi.csv');
     annot_midi = csvread(annotfile);
+    annot_midi = annot_midi(:, 1);
     perflist = strcat(fileName, '.list');
     dist = dtw_batch(perflist, chroma_midi, annot_midi, ...
         fftlen, outdir, param);
