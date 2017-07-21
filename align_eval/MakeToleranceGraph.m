@@ -1,20 +1,6 @@
-function x = MakeToleranceGraph(dist, fs, fftlen)
+function MakeToleranceGraph(dist)
 	% arguments:
 	%			dist: a list of distance
-	%			fs: optional param, the sampling rate
-    %           fftlen: length of FFT used for computing chroma features
-
-    if nargin < 2
-        fs = 22050;
-    end
-    
-    if nargin < 3
-        fftlen = 880;
-    end
-    
-    %% converting frame distance to time offset (ms)
-    fac = fs / fftlen * 4;
-    dist = abs(dist) / fac * 1000;
     
 	fprintf('==> Beginning Calculations for the tolerance graph\n');
 	tolerances = 100 : 100 : 1000; % tolerance in steps - 1 second max tolerance
