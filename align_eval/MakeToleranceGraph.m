@@ -1,4 +1,4 @@
-function MakeToleranceGraph(dist)
+function MakeToleranceGraph(dist, savefile)
 	% arguments:
 	%			dist: a list of distance
     
@@ -23,5 +23,6 @@ function MakeToleranceGraph(dist)
 	xlabel('Tolerance (s)');
 	ylabel('Percent Error');
 	title('Percent Error (DTW predicted beat in second track vs. ground truth beat in second track) vs. Tolerance');
-
+    %% saving plot
+    print(savefile,'-dpng');
 end
