@@ -3,7 +3,7 @@ function MakeToleranceGraph(dist, savefile)
 	%			dist: a list of distance
     
 	fprintf('==> Beginning Calculations for the tolerance graph\n');
-	tolerances = 100 : 100 : 1000; % tolerance in steps - 1 second max tolerance
+	tolerances = 100 : 100 : 2000; % tolerance in steps - 1 second max tolerance
 	percentError = zeros(1, length(tolerances));
 
 	for index = 1:length(tolerances)
