@@ -1,12 +1,12 @@
 *.m~
 .DS_Store
 ._.DS_Store
-*.txt
 *.mat
 *.wav
 *.csv
 *.sv
 *.list
+*.jpg
 *.png
 *.out
 *.err
@@ -17,3 +17,4 @@
 *.mp3
 *.hyp
 *.mexa64
+*.txt
