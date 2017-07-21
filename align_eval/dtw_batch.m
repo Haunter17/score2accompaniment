@@ -20,7 +20,7 @@ fclose(fid);
 
 agg_dist = cell(1, fileIndex);
 
-for index = 1:length(fileNameList)
+parfor index = 1:length(fileNameList)
     fileName = fileNameList{index};
     [pathstr,name,ext] = fileparts(fileName);
     disp(['==> Generating alignment on ',name]);

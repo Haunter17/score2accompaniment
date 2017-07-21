@@ -1,6 +1,7 @@
 *.m~
 .DS_Store
 ._.DS_Store
+._data
 *.mat
 *.wav
 *.csv
