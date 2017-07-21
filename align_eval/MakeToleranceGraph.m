@@ -1,41 +1,38 @@
-function x = MakeToleranceGraph(beatX, beatY, alignmentX, alignmentY, fs)
+function x = MakeToleranceGraph(dist, fs, fftlen)
 	% arguments:
-	%			beatX: a list of the indices in the alignment for the beats in the first piece
-	%			beatY: a list of the indices in the alignment for the beats in the second piece
-	%					beatX and beatY should be the same length, since the pieces should be of the same song
-	%			alignmentX: indices of the first piece that make up the alignment
-	% 			alingmentY: inices of the second piece that make up the alignment
-	% 					pieceOne(alignmentX(i)) is aligned with pieceTwo(alignmentY(i)) via DTW
+	%			dist: a list of distance
 	%			fs: optional param, the sampling rate
+    %           fftlen: length of FFT used for computing chroma features
 
-
-	if nargin < 5
-		fs = 22050;
-	end
-
+    if nargin < 2
+        fs = 22050;
+    end
+    
+    if nargin < 3
+        fftlen = 880;
+    end
+    
+    %% converting frame distance to time offset (ms)
+    fac = fs / fftlen * 4;
+    dist = abs(dist) / fac * 1000;
+    
 	fprintf('==> Beginning Calculations for the tolerance graph\n');
-
-	tolerances = 1:fs/50; % tolerance in steps - 1 second max tolerance
+	tolerances = 100 : 100 : 1000; % tolerance in steps - 1 second max tolerance
 	percentError = zeros(1, length(tolerances));
 
-	% pull out the values of the alignment at each beat from the first track, and
-	% find how far from the actual beat for the second track is
-	relevantAlignmentYs = alignmentY(beatX);
-	dists = abs(beatY - relevantAlignmentYs);
-	for toleranceIndex = 1:length(tolerances)
+	for index = 1:length(tolerances)
 		% find the number out of tolerance
-		tolerance = tolerances(toleranceIndex);
-		fprintf('Evaluating with tolerance: %g out of %g\n', tolerance, max(tolerances));
-		numOutOfTolerance = sum(dists > tolerance);
+		tol = tolerances(index);
+		fprintf('Evaluating with tolerance: %g \n', tol);
+		count = sum(dist > tol);
 		% percent error is the number out of tolerance over the number of beats
-		percentError(toleranceIndex) = numOutOfTolerance / length(beatX);
-		fprintf('Percent error is: %f\n', percentError(toleranceIndex));
+		percentError(index) = count / length(dist);
+		fprintf('Percent error is: %f\n', percentError(index));
 	end
 
 	fprintf('==> Plotting\n');
 	% scale up the tolerances to time using fs
-	toleranceInTime = tolerances * (1/fs);
-	plot(toleranceInTime, percentError);
+	plot(tolerances, percentError);
 
 	xlabel('Tolerance (s)');
 	ylabel('Percent Error');

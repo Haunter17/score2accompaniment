@@ -1,6 +1,11 @@
-function [ output_args ] = dtw_batch(filelist, signal_midi, annot_midi, outdir )
-%UNTITLED4 Summary of this function goes here
-%   Detailed explanation goes here
+function [ agg_dist ] = dtw_batch(filelist, chroma_midi, annot_midi,...
+    fftlen, outdir, param )
+%   dtw_batch
+%
+if nargin < 5
+    param = {};
+end
+addpath('./chroma-ansyn/');
 
 fid = fopen(filelist);
 fileNameList = '';
@@ -13,19 +18,29 @@ while ischar(curfile)
 end
 fclose(fid);
 
+agg_dist = cell(1, fileIndex);
+
 parfor index = 1:length(fileNameList)
     fileName = fileNameList{index};
     [pathstr,name,ext] = fileparts(fileName);
     disp(['==> Generating alignment on ',name]);
     wavfile = strcat(fileName, '.wav');
-    signal_perf = audioread(wavfile);
+    %% compute chroma
+    [signal_perf, fs] = audioread(wavfile);
+    chroma_perf = chromagram_IF(signal_perf, fs, fftlen);
+    %% DTW
+    [align_x, align_y] = dtw_single(chroma_midi, chroma_perf, param);
+    %% visualize
     annotfile = strcat(fileName, '.csv');
     annot_perf = csvread(annotfile);
     annot_perf = annot_perf(:, 1);
+    gt_midi = annot_midi * fs / fftlen * 4;
+    gt_perf = annot_perf * fs / fftlen * 4;
     savefile = strcat(outdir, name);
-    [dist, ix, iy] = dtw_single(signal_midi, signal_perf, annot_midi, ...
-            annot_perf, savefile, 500, 22050);
+    dtw_visualize(align_x, align_y, gt_midi, gt_perf, savefile);
+    %% aggregate distance
+    agg_dist{index} = calculate_offset(align_x, align_y, gt_midi, gt_perf);
 end
-
+agg_dist = cell2mat(agg_dist);
 end
 

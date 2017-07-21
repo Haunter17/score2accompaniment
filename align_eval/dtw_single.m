@@ -1,30 +1,24 @@
-function [dist, ix, iy] = dtw_single(signal_x, signal_y, annot_x, annot_y,...
-    savefile, downsampling, fs)
+function [ix, iy] = dtw_single(chroma_x, chroma_y, param)
 % arguments:
 	%			signal_x: signal x to be aligned
   	%			signal_y: signal y to be aligned  
-    %           annot_x: annotation time stamps for signal x (in sec)
-    %           annot_y: annotation time stamps for signal y (in sec)
     %           savefile: path to save the plots
     %           downsampling: the rate of downsampling
-	%			fs: optional param, the sampling rate
+    
+addpath('../DTW_AudioLabs/');
 if nargin < 6
     fs = 22050;
 end
-fs = round(fs / downsampling);
-signal_x = signal_x(1 : downsampling : end);
-signal_y = signal_y(1 : downsampling : end);
+if nargin < 7
+    param = {};
+end
 
-[dist, ix, iy] = dtw(signal_x, signal_y);
-plot(ix, iy, '-o', 'DisplayName','alignment');
-ylim([1, length(iy)]);
-hold on;
-ind_annot_x = fs * annot_x;
-ind_annot_y = fs * annot_y;
-plot(ind_annot_x, ind_annot_y, '*', 'DisplayName','groundtruth');
-hold off;
-legend('show')
-print(savefile,'-dpng');
+%% DTW calculation
+C = 1. - chroma_x' * chroma_y;
+[~, E] = TH_DTW_C_to_DE(C, param);
+WP = TH_DTW_E_to_Warpingpath(E, param);
+ix = WP(1, :);
+iy = WP(2, :);
 
 end
 
