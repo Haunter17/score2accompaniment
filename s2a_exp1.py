@@ -56,7 +56,7 @@ y_ = tf.placeholder(tf.float32, shape=[None, numClass])
 
 W_conv1 = weight_variable([6, 6, 1, k1])
 b_conv1 = bias_variable([k1])
-x_image = tf.reshape(x, [-1,numPitches,numTimeFrames,1])
+x_image = tf.reshape(x, [-1, numPitches, numTimeFrames,1])
 
 h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
 h_pool1 = max_pool_2x2(h_conv1)
@@ -64,14 +64,14 @@ h_pool1 = max_pool_2x2(h_conv1)
 W_conv2 = weight_variable([3, 3, k1, k2])
 b_conv2 = bias_variable([k2])
 
-h_conv2 = tf.nn.relu(conv2d(h_conv1, W_conv2) + b_conv2)
+h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
 
 h_pool2 = max_pool_2x2(h_conv2)
 
 W_fc1 = weight_variable([4*10*k2, fc_size])
 b_fc1 = bias_variable([fc_size])
 
-h_pool2_flat = tf.reshape(h_conv2, [-1, 4*10*k2])
+h_pool2_flat = tf.reshape(h_pool2, [-1, 4*10*k2])
 h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
 keep_prob = tf.placeholder(tf.float32)
@@ -105,8 +105,7 @@ for epoch in range(numEpochs):
       batch_end_point = min(i + batch_size, num_training_vec)
       train_batch_data = X_train[i : batch_end_point]
       train_batch_label = y_train[i : batch_end_point]
-      #print(train_batch_data.dtype, train_batch_label.dtype)
-      train_step.run(feed_dict={x: train_batch_data, y_: train_batch_label})
+      train_step.run(feed_dict={x: train_batch_data, y_: train_batch_label, keep_prob: 0.5})
 
     if (epoch+1)%printfreq == 0:
       plotx.append(epoch)
