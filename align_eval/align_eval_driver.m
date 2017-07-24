@@ -10,7 +10,7 @@ if (isempty(curPool))
 end
 
 %% setting params for chroma feature and DTW
-fftlen = 880; % tweak this
+fftlen = 440; % tweak this
 param.dn = int32([1 1 0]);
 param.dm = int32([1 0 1]);
 param.dw = int32([1 1 1]);
@@ -47,6 +47,6 @@ for index = 1:length(fileNameList)
 end
 agg_dist = cell2mat(agg_dist);
 %% converting frame distance to time offset (ms)
-fac = fs / fftlen * 4;
+fac = fs / fftlen * 2;
 ms_dist = abs(agg_dist) / fac * 1000;
 MakeToleranceGraph(ms_dist, strcat(outdir, 'tol'));
