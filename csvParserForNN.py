@@ -12,6 +12,7 @@ filenames = os.listdir(directory)
 random.shuffle(filenames)
 # find how many to keep in your training set
 numInTraining = 1267
+downsamplingRate = 10
 
 # set the shape of your window
 timePerQuery = 3.0
@@ -97,7 +98,9 @@ for curFile in filenames:
 	sampleMatrix = np.delete(sampleMatrix, timeChunksPerQuery * int(np.floor(numPitchesInQuery / 2.)) + int(np.floor(timeChunksPerQuery / 2.)), axis=1)
 	if getDuration:
 		sampleMatrix[np.nonzero(sampleMatrix)] = 1 # turn all non-zeros to 1s
-
+		# map to ints to make smaller
+		sampleMatrix = sampleMatrix.astype(int)
+		print(type(sampleMatrix[0][0]))
 	# insert the new data into the sample / label matrices
 	# keep track of where you are in these matrices
 	numToAdd = sampleMatrix.shape[0]
@@ -125,6 +128,12 @@ for curFile in filenames:
 	# 	valLabels = np.append(valLabels, labelMatrix, axis=0)	
 
 	fileIndex = fileIndex + 1
+
+# downsample
+trainSamples = trainSamples[::downsamplingRate,:]
+trainLabels = trainLabels[::downsamplingRate,:]
+valSamples = valSamples[::downsamplingRate,:]
+trainSamples = trainSamples[::downsamplingRate,:]
 
 # save the data as a .mat file
 sp.savemat({'X_train': trainSamples, 'y_train': trainLabels, 'X_val': valSamples, 'y_val': valLabels})
