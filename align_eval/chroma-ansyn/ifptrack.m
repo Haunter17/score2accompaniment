@@ -37,7 +37,7 @@ if nargin < 7; fmaxu = 4000; end
 
 
 % Calculate the inst freq gram
-[I,S] = ifgram(d,w,w/2,w/2,sr);
+[I,S] = ifgram(d,w,w/2,w/4,sr);
 
 % Only look at bins up to 2 kHz
 maxbin = round(fmaxu * (w/sr) );
