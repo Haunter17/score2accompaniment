@@ -34,8 +34,8 @@ parfor index = 1:length(fileNameList)
     annotfile = strcat(fileName, '.csv');
     annot_perf = csvread(annotfile);
     annot_perf = annot_perf(:, 1);
-    gt_midi = annot_midi * fs / fftlen * 4;
-    gt_perf = annot_perf * fs / fftlen * 4;
+    gt_midi = annot_midi * fs / fftlen * 2;
+    gt_perf = annot_perf * fs / fftlen * 2;
     savefile = strcat(outdir, name);
     dtw_visualize(align_x, align_y, gt_midi, gt_perf, savefile);
     %% aggregate distance
