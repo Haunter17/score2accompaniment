@@ -109,8 +109,8 @@ for epoch in range(numEpochs):
 
     if (epoch+1)%printfreq == 0:
       plotx.append(epoch)
-      val_err = cross_entropy.eval(feed_dict={x:X_val, y_:y_val})   
-      train_err = cross_entropy.eval(feed_dict={x:X_train, y_: y_train})
+      val_err = mse.eval(feed_dict={x:X_val, y_:y_val})   
+      train_err = mse.eval(feed_dict={x:X_train, y_: y_train})
       train_err_list.append(train_err)
       val_err_list.append(val_err)
       print("step %d, t err %g, v err %g"%(epoch, train_err, val_err))
