@@ -9,6 +9,7 @@ hold on;
 %% plot groundtruth index
 plot(gt_x, gt_y, '*', 'DisplayName','groundtruth');
 hold off;
+title(strcat('DTW alignment with midi and ', savefile));
 legend('show')
 
 %% saving plot

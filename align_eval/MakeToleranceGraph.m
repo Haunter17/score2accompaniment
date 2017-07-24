@@ -3,13 +3,13 @@ function MakeToleranceGraph(dist, savefile)
 	%			dist: a list of distance
     
 	fprintf('==> Beginning Calculations for the tolerance graph\n');
-	tolerances = 100 : 100 : 2000; % tolerance in steps - 1 second max tolerance
+	tolerances = 100 : 500 : 5000; % tolerance in steps - 1 second max tolerance
 	percentError = zeros(1, length(tolerances));
 
 	for index = 1:length(tolerances)
 		% find the number out of tolerance
 		tol = tolerances(index);
-		fprintf('Evaluating with tolerance: %g \n', tol);
+		fprintf('Evaluating with tolerance: %g ms\n', tol);
 		count = sum(dist > tol);
 		% percent error is the number out of tolerance over the number of beats
 		percentError(index) = count / length(dist);
