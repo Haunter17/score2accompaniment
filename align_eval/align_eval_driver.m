@@ -48,6 +48,5 @@ for index = 1:length(fileNameList)
 end
 agg_dist = cell2mat(agg_dist);
 %% converting frame distance to time offset (ms)
-fac = fs / fftlen * 4;
-ms_dist = abs(agg_dist) / fac * 1000;
+ms_dist = abs(agg_dist) * 1000;
 MakeToleranceGraph(ms_dist, strcat(outdir, 'tol'));

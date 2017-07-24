@@ -20,7 +20,7 @@ function MakeToleranceGraph(dist, savefile)
 	% scale up the tolerances to time using fs
 	plot(tolerances, percentError);
 
-	xlabel('Tolerance (s)');
+	xlabel('Tolerance (ms)');
 	ylabel('Percent Error');
 	title('Percent Error (DTW predicted beat in second track vs. ground truth beat in second track) vs. Tolerance');
     %% saving plot

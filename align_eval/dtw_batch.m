@@ -20,7 +20,7 @@ fclose(fid);
 
 agg_dist = cell(1, fileIndex);
 
-parfor index = 1:length(fileNameList)
+for index = 1:length(fileNameList)
     fileName = fileNameList{index};
     [pathstr,name,ext] = fileparts(fileName);
     disp(['==> Generating alignment on ',name]);
@@ -35,12 +35,14 @@ parfor index = 1:length(fileNameList)
     annotfile = strcat(fileName, '.csv');
     annot_perf = csvread(annotfile);
     annot_perf = annot_perf(:, 1);
-    gt_midi = annot_midi * fs / fftlen * 4;
-    gt_perf = annot_perf * fs / fftlen * 4;
+    adj_x = double(align_x) * (fftlen / 4) / fs;
+    adj_y = double(align_y) * (fftlen / 4) / fs;
+    gt_midi = annot_midi;
+    gt_perf = annot_perf;
     savefile = strcat(outdir, name);
-    dtw_visualize(align_x, align_y, gt_midi, gt_perf, savefile);
+    dtw_visualize(adj_x, adj_y, gt_midi, gt_perf, savefile);
     %% aggregate distance
-    agg_dist{index} = calculate_offset(align_x, align_y, gt_midi, gt_perf);
+    agg_dist{index} = calculate_offset(adj_x, adj_y, gt_midi, gt_perf);
 end
 agg_dist = cell2mat(agg_dist);
 end

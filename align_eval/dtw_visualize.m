@@ -3,7 +3,7 @@ function [ output_args ] = dtw_visualize(ix, iy, gt_x, gt_y, savefile)
 %   Detailed explanation goes here
 %% plot index of alignment
 plot(ix, iy, '-o', 'DisplayName','alignment');
-ylim([1, length(iy)]);
+ylim([1, max(iy)]);
 hold on;
 
 %% plot groundtruth index
