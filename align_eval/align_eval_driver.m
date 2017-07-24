@@ -10,7 +10,7 @@ if (isempty(curPool))
 end
 
 %% setting params for chroma feature and DTW
-fftlen = 440; % tweak this
+fftlen = 880; % tweak this
 param.dn = int32([1 1 0]);
 param.dm = int32([1 0 1]);
 param.dw = int32([1 1 1]);
@@ -37,6 +37,7 @@ for index = 1:length(fileNameList)
     wavfile = strcat(fileName, 'a_midi.wav');
     [signal_midi, fs] = audioread(wavfile);
     chroma_midi = chromagram_IF(signal_midi, fs, fftlen);
+    chroma_midi = normc(chroma_midi);
     annotfile = strcat(fileName, 'a_midi.csv');
     annot_midi = csvread(annotfile);
     annot_midi = annot_midi(:, 1);
@@ -47,6 +48,6 @@ for index = 1:length(fileNameList)
 end
 agg_dist = cell2mat(agg_dist);
 %% converting frame distance to time offset (ms)
-fac = fs / fftlen * 2;
+fac = fs / fftlen * 4;
 ms_dist = abs(agg_dist) / fac * 1000;
 MakeToleranceGraph(ms_dist, strcat(outdir, 'tol'));

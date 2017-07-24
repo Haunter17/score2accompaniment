@@ -28,14 +28,15 @@ parfor index = 1:length(fileNameList)
     %% compute chroma
     [signal_perf, fs] = audioread(wavfile);
     chroma_perf = chromagram_IF(signal_perf, fs, fftlen);
+    chroma_perf = normc(chroma_perf);
     %% DTW
     [align_x, align_y] = dtw_single(chroma_midi, chroma_perf, param);
     %% visualize
     annotfile = strcat(fileName, '.csv');
     annot_perf = csvread(annotfile);
     annot_perf = annot_perf(:, 1);
-    gt_midi = annot_midi * fs / fftlen * 2;
-    gt_perf = annot_perf * fs / fftlen * 2;
+    gt_midi = annot_midi * fs / fftlen * 4;
+    gt_perf = annot_perf * fs / fftlen * 4;
     savefile = strcat(outdir, name);
     dtw_visualize(align_x, align_y, gt_midi, gt_perf, savefile);
     %% aggregate distance
