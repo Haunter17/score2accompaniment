@@ -27,10 +27,16 @@ for index = 1:length(fileNameList)
     wavfile = strcat(fileName, '.wav');
     %% compute chroma
     [signal_perf, fs] = audioread(wavfile);
+    disp(['-- Calculating chroma features of ', name]);
+    tic;
     chroma_perf = chromagram_IF(signal_perf, fs, fftlen);
     chroma_perf = normc(chroma_perf);
+    toc
     %% DTW
+    disp(['-- DTW alignment on ', name]);
+    tic;
     [align_x, align_y] = dtw_single(chroma_midi, chroma_perf, param);
+    toc
     %% visualize
     annotfile = strcat(fileName, '.csv');
     annot_perf = csvread(annotfile);
@@ -43,6 +49,7 @@ for index = 1:length(fileNameList)
     dtw_visualize(adj_x, adj_y, gt_midi, gt_perf, savefile);
     %% aggregate distance
     agg_dist{index} = calculate_offset(adj_x, adj_y, gt_midi, gt_perf);
+    mean(agg_dist{index})
 end
 agg_dist = cell2mat(agg_dist);
 end

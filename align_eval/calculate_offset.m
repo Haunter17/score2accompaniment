@@ -7,6 +7,9 @@ for index = 1 : length(gt_x)
     y = gt_y(index);
     %% interpolate
     ind_low = find(ix <= x, 1, 'last');
+    if isempty(ind_low) == 1
+        ind_low = 1;
+    end
     if ind_low >= length(ix)
         y_pred = iy(end);
     else
