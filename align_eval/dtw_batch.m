@@ -20,7 +20,7 @@ fclose(fid);
 
 agg_dist = cell(1, fileIndex);
 
-for index = 1:length(fileNameList)
+parfor index = 1:length(fileNameList)
     fileName = fileNameList{index};
     [pathstr,name,ext] = fileparts(fileName);
     disp(['==> Generating alignment on ',name]);
@@ -49,7 +49,6 @@ for index = 1:length(fileNameList)
     dtw_visualize(adj_x, adj_y, gt_midi, gt_perf, savefile);
     %% aggregate distance
     agg_dist{index} = calculate_offset(adj_x, adj_y, gt_midi, gt_perf);
-    mean(agg_dist{index})
 end
 agg_dist = cell2mat(agg_dist);
 end

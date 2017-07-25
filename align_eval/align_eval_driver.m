@@ -11,8 +11,8 @@ end
 
 %% setting params for chroma feature and DTW
 fftlen = 880; % tweak this
-param.dn = int32([1 1 0]);
-param.dm = int32([1 0 1]);
+param.dn = int32([1 1 2]);
+param.dm = int32([1 2 1]);
 param.dw = int32([1 1 1]);
 outdir = './data/';
 
