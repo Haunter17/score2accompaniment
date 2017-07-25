@@ -11,13 +11,16 @@ end
 
 %% setting params for chroma feature and DTW
 fftlen = 880; % tweak this
-param.dn = int32([1 1 2]);
-param.dm = int32([1 2 1]);
-param.dw = int32([1 1 1]);
-outdir = './data/';
+param.dn = int32([1 1 0]);
+param.dm = int32([1 0 1]);
+param.dw = int32([1 1 2]);
+param.subseq = true;
+outdir = './out/';
+mkdir(outdir)
+datadir = './data/';
 
 %% reading midi list
-midilist = strcat(outdir, 'midi.list');
+midilist = strcat(datadir, 'midi.list');
 fid = fopen(midilist);
 fileNameList = '';
 fileIndex = 1;

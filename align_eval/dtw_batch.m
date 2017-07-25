@@ -49,6 +49,7 @@ parfor index = 1:length(fileNameList)
     dtw_visualize(adj_x, adj_y, gt_midi, gt_perf, savefile);
     %% aggregate distance
     agg_dist{index} = calculate_offset(adj_x, adj_y, gt_midi, gt_perf);
+    mean(agg_dist{index})
 end
 agg_dist = cell2mat(agg_dist);
 end

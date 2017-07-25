@@ -15,8 +15,12 @@ for index = 1 : length(gt_x)
     else
         y_low = iy(ind_low);
         y_high = iy(ind_low + 1);
-        fac = (x - ix(ind_low)) / (ix(ind_low + 1) - ix(ind_low));
-        y_pred = (1 - fac) * y_low + fac * y_high; 
+        if ix(ind_low) == ix(ind_low + 1)
+            y_pred = y_high;
+        else
+            fac = (x - ix(ind_low)) / (ix(ind_low + 1) - ix(ind_low));
+            y_pred = (1 - fac) * y_low + fac * y_high; 
+        end
     end            
     dist(index) = y - y_pred;
 end
